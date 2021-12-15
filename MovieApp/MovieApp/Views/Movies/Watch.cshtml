@@ -1,0 +1,7 @@
+﻿@{ 
+    ViewData["Title"] = "Смотреть фильм";
+}
+
+<video width="500" height="300" controls="controls" poster="@ViewBag.ImageUrl">
+    <source src="@ViewBag.Url" type="video/mp4"/>
+</video>

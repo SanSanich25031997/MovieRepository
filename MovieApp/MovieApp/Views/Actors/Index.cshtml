@@ -1,0 +1,90 @@
+﻿@model MovieApp.Models.Actors.ActorViewModelList
+
+@{
+    ViewData["Title"] = "Актеры";
+}
+
+<h1 align="center">Актеры</h1>
+
+@if (Model.ActorsCount == 0)
+{
+    <h2>Актеров не найдено!</h2>
+}
+else
+{
+    <form method="get" align="center">
+        <div class="form-group">
+            <label>Имя или фамилия актера:</label>
+            <input style="width:200px;" name="name" value="@Model.FilterViewModel.EnteredName" class="form-control" />
+            <input type="submit" value="Найти" class="btn btn-success" />
+        </div>
+    </form>
+    <br />
+
+    <table align="center">
+        <tr>
+            <th style="width:30px;">№</th>
+            <th>Актер</th>
+            <th>Фотография</th>
+            <th>Страна</th>
+            <th>Возраст</th>
+            <th>Фильмы</th>
+            <th style="width:250px;">Информация</th>
+        </tr>
+        @{
+            var orderNumber = (ViewBag.PageNumber - 1) * ViewBag.PageSize;
+
+            foreach (var actor in Model.Actors)
+            {
+                orderNumber++;
+                <tr>
+                    <td style="width:30px;">@orderNumber</td>
+                    <td>@actor.FullName</td>
+                    <td><img src="@actor.ImageUrl" width="120"/></td>
+                    <td>@actor.Country</td>
+                    <td>@actor.Age</td>
+                    <td>@actor.Movies</td>
+                    <td style="width:250px; text-align:left;">@actor.Description</td>
+                </tr>
+            }
+        }
+    </table>
+
+    <br />
+    <div class="buttons" align="center">
+        @if (Model.PageViewModel.HasPreviousPage)
+        {
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageViewModel.PageNumber - 1)"
+               class="btn  btn-outline-dark">
+                Назад
+            </a>
+        }
+        @if (Model.PageViewModel.HasNextPage)
+        {
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageViewModel.PageNumber + 1)"
+               class="btn btn-outline-dark">
+                Вперед
+            </a>
+        }
+    </div>
+
+    <style>
+        th {
+            background-color: deepskyblue;
+        }
+
+        td {
+            background-color: aliceblue;
+        }
+        th, td {
+            width: 150px;
+            border: 3px solid black;
+            text-align: center;
+        }
+        .form-control {
+            display : inline;
+        }
+    </style>
+}
